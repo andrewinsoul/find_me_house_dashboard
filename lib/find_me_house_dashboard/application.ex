@@ -17,7 +17,9 @@ defmodule FindMeHouseDashboard.Application do
       # Start a worker by calling: FindMeHouseDashboard.Worker.start_link(arg)
       # {FindMeHouseDashboard.Worker, arg},
       # Start to serve requests, typically the last entry
-      FindMeHouseDashboardWeb.Endpoint
+      FindMeHouseDashboardWeb.Endpoint,
+      FindMeHouseDashboard.FindMeHouseSupervisor,
+      FindMeHouseDashboard.SpinUpServices
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
