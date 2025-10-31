@@ -1,11 +1,41 @@
-# Script for populating the database. You can run it as:
-#
-#     mix run priv/repo/seeds.exs
-#
-# Inside the script, you can read and write to any of your
-# repositories directly:
-#
-#     FindMeHouseDashboard.Repo.insert!(%FindMeHouseDashboard.SomeSchema{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
+alias FindMeHouseDashboard.Repo
+alias FindMeHouseDashboard.Monitoring.ServiceStatus
+
+
+Repo.delete_all(ServiceStatus)
+
+services = [
+  %{
+    name: "Auth Service",
+    status: "healthy",
+    last_checked: DateTime.utc_now()
+  },
+  %{
+    name: "Payment Service",
+    status: "healthy",
+    last_checked: DateTime.utc_now()
+  },
+  %{
+    name: "AI Agent Service",
+    status: "degraded",
+    last_checked: DateTime.utc_now()
+  },
+  %{
+    name: "Media Storage Service",
+    status: "healthy",
+    last_checked: DateTime.utc_now()
+  },
+  %{
+    name: "Database Service",
+    status: "down",
+    last_checked: DateTime.utc_now()
+  }
+]
+
+Enum.each(services, fn service_attrs ->
+  %ServiceStatus{}
+  |> ServiceStatus.changeset(service_attrs)
+  |> Repo.insert!()
+end)
+
+IO.puts "Seeded #{length(services)} services"
