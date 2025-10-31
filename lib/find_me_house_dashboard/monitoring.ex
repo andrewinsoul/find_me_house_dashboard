@@ -22,6 +22,23 @@ defmodule FindMeHouseDashboard.Monitoring do
   end
 
   @doc """
+  Updates a service status and broadcasts the change to all connected clients.
+  """
+  def update_service_status_and_broadcast(%ServiceStatus{} = service_status, attrs) do
+    case update_service_status(service_status, attrs) do
+      {:ok, updated_service} ->
+
+        FindMeHouseDashboardWeb.Endpoint.broadcast!("service_updates", "status_updated", %{
+          service: updated_service
+        })
+        {:ok, updated_service}
+
+      {:error, changeset} ->
+        {:error, changeset}
+    end
+  end
+
+  @doc """
   Gets a single service_status.
 
   Raises `Ecto.NoResultsError` if the Service status does not exist.
