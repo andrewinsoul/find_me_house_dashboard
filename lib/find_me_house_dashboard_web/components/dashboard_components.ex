@@ -98,19 +98,19 @@ defmodule FindMeHouseDashboardWeb.DashboardComponents do
   end
 
   # Private helper functions
-  defp status_border_color("healthy"), do: "border-green-500"
-  defp status_border_color("degraded"), do: "border-yellow-500"
-  defp status_border_color("down"), do: "border-red-500"
+  def status_border_color("healthy"), do: "border-green-500"
+  def status_border_color("degraded"), do: "border-yellow-500"
+  def status_border_color("down"), do: "border-red-500"
 
-  defp status_dot_color("healthy"), do: "bg-green-500"
-  defp status_dot_color("degraded"), do: "bg-yellow-500"
-  defp status_dot_color("down"), do: "bg-red-500"
+  def status_dot_color("healthy"), do: "bg-green-500"
+  def status_dot_color("degraded"), do: "bg-yellow-500"
+  def status_dot_color("down"), do: "bg-red-500"
 
-  defp status_badge_color("healthy"), do: "bg-green-100 text-green-800"
-  defp status_badge_color("degraded"), do: "bg-yellow-100 text-yellow-800"
-  defp status_badge_color("down"), do: "bg-red-100 text-red-800"
+  def status_badge_color("healthy"), do: "bg-green-100 text-green-800"
+  def status_badge_color("degraded"), do: "bg-yellow-100 text-yellow-800"
+  def status_badge_color("down"), do: "bg-red-100 text-red-800"
 
-  defp format_time(datetime) do
+  def format_time(datetime) do
     time = DateTime.to_time(datetime)
     String.pad_leading(Integer.to_string(time.hour), 2, "0") <> ":" <>
     String.pad_leading(Integer.to_string(time.minute), 2, "0") <> ":" <>

@@ -11,9 +11,13 @@ defmodule FindMeHouseDashboard.ServiceHealthChecker do
   end
 
   def init(service) do
-    interval = Enum.random([3000, 4000, 5000, 6000])
-    Process.send_after(self(), :check_service_status, interval)
-    {:ok, %{service: service, interval: interval}}
+    Process.send_after(self(), :check_service_status, get_interval())
+    {:ok, %{service: service, interval: get_interval()}}
+  end
+
+  defp get_interval() do
+    random_interval = Enum.random([3000, 4000, 5000, 6000])
+    Application.get_env(:find_me_house_dashboard, :work_interval, random_interval)
   end
 
   def handle_info(:check_service_status, %{service: service, interval: interval} = state) do
@@ -36,7 +40,7 @@ defmodule FindMeHouseDashboard.ServiceHealthChecker do
     {:noreply, %{state | service: updated_service}}
   end
 
-  defp simulate_status_check(service) do
+  def simulate_status_check(service) do
     random = :rand.uniform(100)
 
     case service.status do

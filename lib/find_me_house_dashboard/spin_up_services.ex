@@ -9,7 +9,7 @@ defmodule FindMeHouseDashboard.SpinUpServices do
 
   def init(:ok) do
     # Start checkers for all existing services
-    :timer.send_after(1000, :start_services)
+    Process.send_after(self(), :start_services, 1000)
     {:ok, %{}}
   end
 
@@ -22,6 +22,4 @@ defmodule FindMeHouseDashboard.SpinUpServices do
 
     {:noreply, state}
   end
-
-  # Could also handle starting checkers for newly created services
 end
