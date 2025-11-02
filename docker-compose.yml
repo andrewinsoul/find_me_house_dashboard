@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: find_me_house_dashboard_dev
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh boot.sh
+    volumes:
+      - .:/app
+      - /app/deps
+      - /app/_build
+    ports:
+      - "4000:4000"
+    environment:
+      MIX_ENV: dev
+      DATABASE_URL: ecto://postgres:postgres@db/find_me_house_dashboard_dev
+      PHX_HOST: localhost
+      SECRET_KEY_BASE: mdqVGwUdvEqwiI1jYoBMdouis4QNdqnOvNWM53/QAQKm+HWHk/Mf4rLkP2KSwEs/
+    depends_on:
+      - db
+volumes:
+  db_data:
