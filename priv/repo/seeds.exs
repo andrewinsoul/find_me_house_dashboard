@@ -8,27 +8,27 @@ services = [
   %{
     name: "Auth Service",
     status: "healthy",
-    last_checked: DateTime.utc_now()
+    last_checked: NaiveDateTime.local_now()
   },
   %{
     name: "Payment Service",
     status: "healthy",
-    last_checked: DateTime.utc_now()
+    last_checked: NaiveDateTime.local_now()
   },
   %{
     name: "AI Agent Service",
     status: "degraded",
-    last_checked: DateTime.utc_now()
+    last_checked: NaiveDateTime.local_now()
   },
   %{
     name: "Media Storage Service",
     status: "healthy",
-    last_checked: DateTime.utc_now()
+    last_checked: NaiveDateTime.local_now()
   },
   %{
     name: "Database Service",
     status: "down",
-    last_checked: DateTime.utc_now()
+    last_checked: NaiveDateTime.local_now()
   }
 ]
 

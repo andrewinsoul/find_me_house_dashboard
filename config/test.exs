@@ -23,7 +23,7 @@ config :find_me_house_dashboard, FindMeHouseDashboardWeb.Endpoint,
 # In test we don't send emails.
 config :find_me_house_dashboard, FindMeHouseDashboard.Mailer, adapter: Swoosh.Adapters.Test
 
-config :find_me_house_dashboard, :work_interval, 50
+config :find_me_house_dashboard, :work_interval, 1200
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false

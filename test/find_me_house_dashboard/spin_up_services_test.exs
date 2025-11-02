@@ -2,29 +2,31 @@ defmodule FindMeHouseDashboard.ServiceStarterTest do
   use FindMeHouseDashboard.DataCase, async: false
 
   alias FindMeHouseDashboard.Monitoring.ServiceStatus
+  alias FindMeHouseDashboard.Monitoring
+  alias FindMeHouseDashboard.ServiceHealthChecker
   alias FindMeHouseDashboard.Repo
 
-  setup do
-    Repo.delete_all(ServiceStatus)
+  test "that database is updated periodically after application starts" do
+    service =
+      %ServiceStatus{
+        id: System.unique_integer([:positive]),
+        name: "Periodic Test Service",
+        status: "healthy",
+        last_checked: NaiveDateTime.local_now() |> DateTime.from_naive!("Etc/UTC")
+      }
+      |> Repo.insert!()
 
-    now = DateTime.truncate(DateTime.utc_now(), :second)
+    {:ok, pid} = ServiceHealthChecker.start_link(service)
 
-    ai_service =
-      %ServiceStatus{name: "AI Service", status: "healthy", last_checked: now} |> Repo.insert!()
+    initial_service = Monitoring.get_service_status!(service.id)
+    initial_check_time = initial_service.last_checked
 
-    db_service =
-      %ServiceStatus{name: "DB Service", status: "degraded", last_checked: now} |> Repo.insert!()
+    :timer.sleep(1400)
 
-    %{services: [ai_service, db_service]}
-  end
+    updated_service = Monitoring.get_service_status!(service.id)
+    assert DateTime.compare(updated_service.last_checked, initial_check_time) == :gt
 
-  test "application starts with health checkers for each service in the DB" do
-    Process.sleep(1200)
-
-    dynamic_children =
-      DynamicSupervisor.which_children(FindMeHouseDashboard.FindMeHouseDynamicSupervisor)
-
-    child_count = length(dynamic_children)
-    assert child_count == 2
+    Process.exit(pid, :normal)
+    Repo.delete(service)
   end
 end

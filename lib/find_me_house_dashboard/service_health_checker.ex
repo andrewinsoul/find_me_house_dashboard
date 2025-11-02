@@ -26,11 +26,11 @@ defmodule FindMeHouseDashboard.ServiceHealthChecker do
     if new_status != service.status do
       Monitoring.update_service_status_and_broadcast(service, %{
         status: new_status,
-        last_checked_at: DateTime.utc_now()
+        last_checked: NaiveDateTime.local_now()
       })
     else
       Monitoring.update_service_status(service, %{
-        last_checked_at: DateTime.utc_now()
+        last_checked: NaiveDateTime.local_now()
       })
     end
 
