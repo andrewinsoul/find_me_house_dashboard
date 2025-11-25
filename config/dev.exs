@@ -4,7 +4,7 @@ import Config
 config :find_me_house_dashboard, FindMeHouseDashboard.Repo,
   username: "postgres",
   password: "postgres",
-  hostname: "localhost",
+  hostname: "db",
   database: "find_me_house_dashboard_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
