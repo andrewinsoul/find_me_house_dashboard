@@ -12,7 +12,7 @@ defmodule FindMeHouseDashboard.ServiceStarterTest do
         id: System.unique_integer([:positive]),
         name: "Periodic Test Service",
         status: "healthy",
-        last_checked: NaiveDateTime.local_now() |> DateTime.from_naive!("Etc/UTC")
+        last_checked: DateTime.utc_now()
       }
       |> Repo.insert!()
 

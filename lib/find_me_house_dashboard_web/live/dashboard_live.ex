@@ -1,6 +1,7 @@
 defmodule FindMeHouseDashboardWeb.DashboardLive do
   use FindMeHouseDashboardWeb, :live_view
   alias FindMeHouseDashboard.Monitoring
+  alias FindMeHouseDashboardWeb.Helpers.TimeHelper
   import FindMeHouseDashboardWeb.DashboardComponents
 
   @impl true
@@ -11,11 +12,16 @@ defmodule FindMeHouseDashboardWeb.DashboardLive do
     end
 
     services = Monitoring.list_service_statuses()
+    timezone = get_connect_params(socket)["timezone"] || "UTC"
 
     {:ok,
      socket
      |> assign(:services, services)
-     |> assign(:last_updated, DateTime.utc_now())
+     |> assign(:timezone, timezone)
+     |> assign(
+       :last_updated,
+       TimeHelper.to_local_time(DateTime.utc_now(), timezone) |> TimeHelper.format_time_only()
+     )
      |> assign(:page_title, "FindMeHouse Health Dashboard")}
   end
 
@@ -28,6 +34,7 @@ defmodule FindMeHouseDashboardWeb.DashboardLive do
         },
         socket
       ) do
+    timezone = socket.assigns.timezone
     # Update the specific service in the list
     updated_services =
       socket.assigns.services
@@ -42,11 +49,28 @@ defmodule FindMeHouseDashboardWeb.DashboardLive do
     {:noreply,
      socket
      |> assign(:services, updated_services)
-     |> assign(:last_updated, DateTime.utc_now())}
+     |> assign(
+       :last_updated,
+       TimeHelper.to_local_time(DateTime.utc_now(), timezone) |> TimeHelper.format_time_only()
+     )}
   end
 
   @impl true
   def render(assigns) do
+    timezone = assigns.timezone
+
+    updated_services =
+      Enum.map(assigns.services, fn service ->
+        %{
+          service
+          | last_checked:
+              TimeHelper.to_local_time(service.last_checked, timezone)
+              |> TimeHelper.format_time_only()
+        }
+      end)
+
+    assigns = assign(assigns, :services, updated_services)
+
     ~H"""
     <div class="bg-gray-50 border-gray-200 border-1 rounded-md">
       <.dashboard_header last_updated={@last_updated} />

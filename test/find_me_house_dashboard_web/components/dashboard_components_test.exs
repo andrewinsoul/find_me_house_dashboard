@@ -20,15 +20,5 @@ defmodule FindMeHouseDashboardWeb.DashboardComponentsTest do
       assert status_badge_color("degraded") == "bg-yellow-100 text-yellow-800"
       assert status_badge_color("down") == "bg-red-100 text-red-800"
     end
-
-    test "format_time/1 formats datetime correctly" do
-      datetime = ~U[2023-10-05 14:30:45Z]
-      assert format_time(datetime) == "14:30:45"
-    end
-
-    test "format_time/1 pads single digits with zeros" do
-      datetime = ~U[2023-10-05 09:05:07Z]
-      assert format_time(datetime) == "09:05:07"
-    end
   end
 end

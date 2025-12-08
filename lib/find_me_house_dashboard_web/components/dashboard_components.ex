@@ -31,7 +31,7 @@ defmodule FindMeHouseDashboardWeb.DashboardComponents do
         <div class="mt-4 text-sm text-gray-600">
           <div class="flex justify-between">
             <span>Last checked:</span>
-            <span class="font-mono"><%= format_time(@service.last_checked) %></span>
+            <span class="font-mono"><%= @service.last_checked %></span>
           </div>
           <div class="flex justify-between mt-1">
             <span>Service ID:</span>
@@ -70,7 +70,7 @@ defmodule FindMeHouseDashboardWeb.DashboardComponents do
             <p class="text-gray-600 mt-1">Real-time monitoring of all services</p>
           </div>
           <div class="text-sm text-gray-500">
-            Last updated: <%= format_time(@last_updated) %>
+            Last updated: <%= @last_updated %>
           </div>
         </div>
       </div>
@@ -109,11 +109,4 @@ defmodule FindMeHouseDashboardWeb.DashboardComponents do
   def status_badge_color("healthy"), do: "bg-green-100 text-green-800"
   def status_badge_color("degraded"), do: "bg-yellow-100 text-yellow-800"
   def status_badge_color("down"), do: "bg-red-100 text-red-800"
-
-  def format_time(datetime) do
-    time = DateTime.to_time(datetime)
-    String.pad_leading(Integer.to_string(time.hour), 2, "0") <> ":" <>
-    String.pad_leading(Integer.to_string(time.minute), 2, "0") <> ":" <>
-    String.pad_leading(Integer.to_string(time.second), 2, "0")
-  end
 end

@@ -10,14 +10,14 @@ defmodule FindMeHouseDashboard.FindMeHouseSupervisorTest do
         id: 1001,
         name: "Test Service 1",
         status: "healthy",
-        last_checked: NaiveDateTime.local_now() |> DateTime.from_naive!("Etc/UTC")
+        last_checked: DateTime.utc_now()
       }
       |> Repo.insert!(),
       %ServiceStatus{
         id: 1002,
         name: "Test Service 2",
         status: "degraded",
-        last_checked: NaiveDateTime.local_now() |> DateTime.from_naive!("Etc/UTC")
+        last_checked: DateTime.utc_now()
       }
       |> Repo.insert!()
     ]
