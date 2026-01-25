@@ -1,5 +1,7 @@
 # FindMeHouseDashboard
 
+This is a requirement code challenge I wrote during the hiring process in Sigma Logic 
+
 This application built with Elixir, Phoenix Liveview and PostgreSQL monitors the health of each component of the FindMeHouse Application and displays their status in real time without the need for refreshing of page.
 
 ## Features
